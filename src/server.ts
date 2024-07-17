@@ -1,6 +1,18 @@
 import fastify from "fastify"
+import cors from '@fastify/cors';
+import { createTrip } from "./routes/create-trip";
+import { serializerCompiler, validatorCompiler } from "fastify-type-provider-zod";
 
 const app = fastify();
+
+app.setValidatorCompiler(validatorCompiler);
+app.setSerializerCompiler(serializerCompiler);
+
+app.register(cors, {
+    origin: 'localhost:3333/trips'
+})
+
+app.register(createTrip)
 
 app.listen({ port: 3333 }).then(() => {
     console.log("server is running")
